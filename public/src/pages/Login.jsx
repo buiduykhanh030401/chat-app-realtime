@@ -22,6 +22,12 @@ function Login() {
         theme: "dark"
     }
 
+    useEffect(() => {
+        if (localStorage.getItem('chat-app-user')) {
+            navigate('/')
+        }
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (handleValidation()) {
@@ -36,7 +42,7 @@ function Login() {
                 toast.error(data.msg, toastOptions);
             }
             if (data.status === true) {
-                localStorage.setItem('chet-app-user', JSON.stringify(data.user))
+                localStorage.setItem('chat-app-user', JSON.stringify(data.user))
                 navigate("/");
             }
         }

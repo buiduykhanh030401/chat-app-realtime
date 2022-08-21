@@ -130,7 +130,7 @@ const FormContainer = styled.div`
         }
         h1 {
             color: white;
-            text-tranform: uppercase;
+            text-transform: uppercase;
         }
     }
     form {
