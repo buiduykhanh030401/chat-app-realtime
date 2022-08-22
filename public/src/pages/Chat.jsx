@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { allUsersRoute } from '../utils/APIRoutes';
+import { allUsersRoute, host } from '../utils/APIRoutes';
 import Contacts from '../components/Contacts';
 import Welcome from '../components/Welcome';
 import ChatContainer from '../components/ChatContainer';
+import { io } from 'socket.io-client';
 
 
 function Chat() {
+    const socket = useRef();
     const navigate = useNavigate()
     const [contacts, setContacts] = useState([]);
     const [currentUser, setCurrentUser] = useState([]);
@@ -18,6 +20,13 @@ function Chat() {
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
     }
+    useEffect(() => {
+        if (currentUser) {
+            socket.current = io(host);
+            socket.current.emit("add-user", currentUser._id);
+        }
+
+    }, [currentUser]);
     // Check login
     useEffect(() => {
         if (!localStorage.getItem('chat-app-user')) {
@@ -34,6 +43,7 @@ function Chat() {
     // check isSetAvatar
     useMemo(() => {
         if (currentUser) {
+
             if (currentUser.isAvatarImageSet) {
                 const fetchData = async () => {
                     const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
@@ -64,6 +74,8 @@ function Chat() {
                             :
                             <ChatContainer
                                 currentChat={currentChat}
+                                currentUser={currentUser}
+                                socket={socket}
                             />
                     }
 
