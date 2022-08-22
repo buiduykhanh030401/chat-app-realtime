@@ -12,7 +12,8 @@ app.use(express.json());
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messagesRoutes);
 
-mongoose.connect(process.env.MONGO_URL, {
+// const URI = 'mongodb+srv://admin:duykhanh651@cluster0.nmguflc.mongodb.net/?retryWrites=true&w=majority';
+mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
@@ -20,6 +21,14 @@ mongoose.connect(process.env.MONGO_URL, {
 }).catch((err) => {
     console.log(err.message);
 });
+// mongoose.connect(process.env.MONGO_URL, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+// }).then(() => {
+//     console.log("DB Connection Successfull");
+// }).catch((err) => {
+//     console.log(err.message);
+// });
 
 const server = app.listen(process.env.PORT, () => {
     console.log(`Server Started on PORT ${process.env.PORT}`);
