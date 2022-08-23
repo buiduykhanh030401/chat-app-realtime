@@ -36,11 +36,11 @@ module.exports.login = async (req, res, next) => {
         const { username, password } = req.body
         const user = await User.findOne({ username });
         if (!user) {
-            return res.json({ msg: "Incorrect username or password", status: false })
+            return res.json({ msg: "Incorrect username or password1", status: false })
         }
         const isPasswordValid = await brcypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.json({ msg: "Incorrect username or password", status: false })
+            return res.json({ msg: "Incorrect username or password2", status: false })
         }
         delete user.password;
         return res.json({ status: true, user })
